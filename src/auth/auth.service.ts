@@ -61,13 +61,8 @@ export class AuthService {
       },
     });
 
-    if (!user) throw new ForbiddenException('Access Denied');
+    if (!user || !user.hashedRt) throw new ForbiddenException('Access Denied');
 
-    console.log(
-      '🚀  file: auth.service.ts:66 ~ AuthService ~ refreshTokens ~ rt, user.hashedRt:',
-      rt,
-      user.hashedRt,
-    );
     const rtMatches = await bcrypt.compare(rt, user.hashedRt);
 
     if (!rtMatches) throw new ForbiddenException('Access Denied');
